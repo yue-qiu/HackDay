@@ -14,7 +14,9 @@ def view(tid):
         message = {"content": floor.content,
                    "comment_floor": floor.comment_floor,
                    "post_time": floor.post_time,
-                   "like": floor.like, }
+                   "like": floor.like,
+                   "fid": floor.fid,
+                   }
         messages.append(message.copy())
     result = {
         "code": status.get("SUCCESS"),
