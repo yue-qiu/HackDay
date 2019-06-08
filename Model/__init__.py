@@ -28,6 +28,7 @@ class Post(base):
     post_time = Column(DateTime, default=datetime.datetime.utcnow)
     like = Column(Integer)
     pid = Column(Integer, primary_key=True)
+    uid = Column(Integer)
 
 
 class Subject(base):
