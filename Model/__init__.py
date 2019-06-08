@@ -37,3 +37,11 @@ class Subject(base):
     uid = Column(Integer)
     title = Column(String(255))
     post_time = Column(DateTime, default=datetime.datetime.utcnow)
+
+class Comment(base):
+    __tablename__ = 'comment_information'  # 表名
+    id = Column(Integer, primary_key=True)
+    uid_commenter = Column(Integer)
+    uid_commentee = Column(Integer)
+    counter = Column(Integer)
+
