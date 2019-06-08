@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, session as ses
+from flask import Blueprint, request, jsonify, session as ses, g
 import hashlib
 from Model import session, User
 from conf import status
@@ -20,12 +20,12 @@ def register():
             session.commit()
             result = {
                 "code": status.get("SUCCESS"),
-                "message": "SUCCESS",
+                "message": "注册成功",
             }
             return jsonify(result)
     result = {
         "code": status.get("FAIL"),
-        "message": "FAIL",
+        "message": "注册失败，用户名已存在",
     }
     return jsonify(result)
 
@@ -42,12 +42,12 @@ def login():
             ses["uid"] = user.uid
             result = {
                 "code": status.get("SUCCESS"),
-                "MESSAGE": "SUCCESS",
+                "MESSAGE": "登陆成功",
             }
             return jsonify(result)
     result = {
         "code": status.get("FAIL"),
-        "MESSAGE": "FAIL",
+        "MESSAGE": "登陆失败，请检查用户密码",
     }
     return jsonify(result)
 
@@ -55,8 +55,7 @@ def login():
 def auth_login():
     if not ses.get("uid", None):
         result = {
-            "code": status.get("FAIL"),
-            "MESSAGE": "FAIL",
+            "code": 300,
+            "MESSAGE": "未登录",
         }
         return jsonify(result)
-
