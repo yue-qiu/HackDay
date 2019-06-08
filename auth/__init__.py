@@ -38,7 +38,7 @@ def login():
         hash = hashlib.md5()
         hash.update(password.encode(encoding='utf-8'))
         user = session.query(User).filter(User.username == username, User.password == hash.hexdigest()).first()
-        if user and not ses.get(user.uid, None):
+        if user and not ses.get("uid", None):
             ses["uid"] = user.uid
             result = {
                 "code": status.get("SUCCESS"),
@@ -50,4 +50,13 @@ def login():
         "MESSAGE": "FAIL",
     }
     return jsonify(result)
+
+
+def auth_login():
+    if not ses.get("uid", None):
+        result = {
+            "code": status.get("FAIL"),
+            "MESSAGE": "FAIL",
+        }
+        return jsonify(result)
 
