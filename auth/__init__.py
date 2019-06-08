@@ -10,12 +10,20 @@ Auth = Blueprint('Auth', __name__)
 def register():
     username = request.form.get("username")
     password = request.form.get("password")
-    if username and password:
+    phone = request.form.get("phone")
+    email = request.form.get("email")
+    qq = request.form.get("qq")
+    if username and password and phone and email and qq:
         hash = hashlib.md5()
         hash.update(password.encode(encoding='utf-8'))
         user = session.query(User).filter(User.username == username).first()
         if not user:
-            user = User(username=username, password=hash.hexdigest(), avatar_url='http://pic1.cugapp.com/FikstAllXLweowBEXpy5FQxPd8td.jpg')
+            user = User(username=username,
+                        password=hash.hexdigest(),
+                        avatar_url='http://pic1.cugapp.com/FikstAllXLweowBEXpy5FQxPd8td.jpg',
+                        phone=phone,
+                        email=email,
+                        qq=qq)
             session.add(user)
             session.commit()
             result = {

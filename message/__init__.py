@@ -13,10 +13,11 @@ def view(tid):
     messages = []
     for floor in floors:
         commentee = session.query(Post).filter(Post.fid == floor.comment_floor).first()
-        commentee_name = session.query(User).filter(User.uid == commentee.uid).first()
+        commentee_name = session.query(User).filter(User.uid == commentee.uid).first().username
+
         message = {"content": floor.content,
-                   "comment_floor": floor.comment_floor,
-                   "comment_name": commentee_name,
+                   "commentee_floor": floor.comment_floor,
+                   "commentee_name": commentee_name,
                    "post_time": floor.post_time,
                    "like": floor.like,
                    "fid": floor.fid,
