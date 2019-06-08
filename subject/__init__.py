@@ -25,7 +25,7 @@ def postSubject():
     return jsonify(ret)
 
 @Sub.route('/deleteSubject', methods=['POST'])
-def deleteSubject(tid):
+def deleteSubject():
     tid = request.form.get('tid', None)
     uid = ses.get("uid", None)
     if tid is None:
@@ -34,33 +34,70 @@ def deleteSubject(tid):
             'MESSAGE': '参数不合法'
         }
         return jsonify(ret)
-    subject = session.query(Subject).filter_by(tid==tid and uid==uid).first()
+    subject = session.query(Subject).filter(Subject.tid==tid, Subject.uid==uid).first()
+    ret = {
+        'code': status.get('ERROR'),
+        'MESSAGE': '找不到该贴'
+    }
     if subject is not None:
         session.delete(subject)
         session.commit()
-        return True
-    return False
-    
+        ret['code'] = status.get('SUCCESS')
+        ret['MESSAGE'] = '删除成功'
+    return jsonify(ret)
 
 @Sub.route('/modSubject', methods=['POST'])
-def modSubject(tid, title):
+def modSubject():
     tid = request.form.get('tid', None)
+    title = request.form.get('title', None)
     uid = ses.get("uid", None)
-    if tid is None:
+    if tid is None or title is None:
         ret = {
             'code': status.get('ERROR'),
             'MESSAGE': '参数不合法'
         }
         return jsonify(ret)
-    subject = session.query(Subject).filter_by(tid==tid and uid==uid).first()
-    subject = session.query(Subject).filter_by(tid=tid).first()
+    subject = session.query(Subject).filter(Subject.tid==tid, Subject.uid==uid).first()
+    subject = session.query(Subject).filter(Subject.tid==tid).first()
+    ret = {
+        'code': status.get('ERROR'),
+        'MESSAGE': '找不到该贴'
+    }
     if subject is not None:
         subject.title = title
         session.commit()
-        return True
-    return False
+        ret['code'] = status.get('SUCCESS')
+        ret['MESSAGE'] = '修改成功'
+    return jsonify(ret)
 
 @Sub.route('/getSubList', methods=['POST'])
-def getSubList(page_index): # page_index start from 1
+def getSubList(): # page_index start from 1
     page_size = 10
-    return session.query(Subject).order_by(Subject.tid.desc()).slice((page_index - 1) * page_size, page_index * page_size)
+    page_index = request.form.get('page', None)
+    if page_index is None:
+        ret = {
+            'code': status.get('ERROR'),
+            'MESSAGE': '参数不合法'
+        }
+        return jsonify(ret)
+    page_index = int(page_index)
+    subjectList = session.query(Subject).order_by(Subject.tid.desc()).slice((page_index - 1) * page_size, page_index * page_size)
+    data = list()
+    for v in subjectList:
+        username = session.query(User).filter(User.uid==v.uid).first()
+        username = '匿名' if username is None else username.username
+        threads = session.query(Post).filter(Post.tid==v.tid).count()
+        item = {
+            'tid': v.tid,
+            'username': username,
+            'title': v.title,
+            'post_time': v.post_time,
+            'threads': threads
+        }
+        data.append(item)
+    ret = {
+        'code': status.get('SUCCESS'),
+        'MESSAGE': "获取列表成功",
+        'data': data
+    }
+    return jsonify(ret)
