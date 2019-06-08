@@ -6,6 +6,7 @@ import requests
 
 UserInfo = Blueprint('UserInfo', __name__)
 
+
 @UserInfo.route("/getUserInfo", methods=["POST"])
 def getUserInfo():
     uid = request.form.get('uid')
@@ -33,6 +34,7 @@ def getUserInfo():
     }
     return jsonify(ret)
 
+
 @UserInfo.route("/setUserInfo", methods=["POST"])
 def setUserInfo():
     username = request.form.get('username', None)
@@ -48,7 +50,7 @@ def setUserInfo():
     if username is not None:
         user.username = username
     if pic_file is not None:
-        pic_info = requests.post('http://api.cugxuan.cn:8080/upload', files={'file':pic_file})
+        pic_info = requests.post('http://api.cugxuan.cn:8080/upload', files={'file': pic_file})
         pic_info = pic_info.json()
         print(pic_info)
         if pic_info['code'] == 200:
@@ -66,5 +68,3 @@ def setUserInfo():
         "messages": '修改用户信息成功'
     }
     return jsonify(ret)
-
-
