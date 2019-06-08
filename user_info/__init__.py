@@ -25,8 +25,10 @@ def getUserInfo():
         }
         return jsonify(ret)
     if uid != that_uid:
-        intimate1 = session.query(Comment).filter(Comment.uid_commentee==that_uid, Comment.uid_commenter==uid).first()
-        intimate2 = session.query(Comment).filter(Comment.uid_commentee==uid, Comment.uid_commenter==that_uid).first()
+        intimate1 = session.query(Comment).filter(Comment.uid_commentee == that_uid,
+                                                  Comment.uid_commenter == uid).first()
+        intimate2 = session.query(Comment).filter(Comment.uid_commentee == uid,
+                                                  Comment.uid_commenter == that_uid).first()
         if intimate1 is None or intimate2 is None or min(intimate1, intimate2) < 70:
             ret = {
                 'code': status.get('PERMISSION'),
@@ -43,7 +45,7 @@ def getUserInfo():
         }
     }
     return jsonify(ret)
-        
+
 
 @UserInfo.route("/setUserInfo", methods=["POST"])
 def setUserInfo():
@@ -93,7 +95,8 @@ def Hot(id):
     }
     return jsonify(result)
 
-@UserInfo.route("/getUid", methods=["POST"])
+
+@UserInfo.route("/getUid")
 def getUid():
     uid = ses.get('uid', None)
     if uid is None:
@@ -109,6 +112,7 @@ def getUid():
     }
     return jsonify(result)
 
+
 @UserInfo.route("/getUidByUsername", methods=["POST"])
 def getUidByUsername():
     username = request.form.get('username', None)
@@ -118,7 +122,7 @@ def getUidByUsername():
             "MESSAGE": "获取UID失败",
         }
         return jsonify(result)
-    user = session.query(User).filter(User.username==username).first()
+    user = session.query(User).filter(User.username == username).first()
     if user is None:
         result = {
             "code": status.get("ERROR"),
@@ -132,3 +136,4 @@ def getUidByUsername():
         "uid": uid,
     }
     return jsonify(result)
+

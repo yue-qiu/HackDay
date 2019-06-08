@@ -133,9 +133,3 @@ def auth_login():
             "MESSAGE": "未登录",
         }
         return jsonify(result)
-
-
-@Auth.route("/test")
-def test():
-    send_mail("867280434@qq.com", url="http://www.baidu.com")
-    return jsonify("Ok")
