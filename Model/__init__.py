@@ -22,7 +22,7 @@ class User(base):
     email = Column(String(20))
     qq = Column(String(12))
     wechat = Column(String(15))
-    is_active = Column(Integer(1))
+    is_active = Column(Integer)
 
 
 class Post(base):
@@ -61,3 +61,4 @@ class SecMessage(base):
     name_sender = Column(String(255))
     name_receiver = Column(String(255))
     time = Column(DateTime, default=datetime.datetime.utcnow)
+    msg_type = Column(Integer)

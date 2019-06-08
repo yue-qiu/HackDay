@@ -14,11 +14,14 @@ def view(tid):
     for floor in floors:
         commentee = session.query(Post).filter(Post.fid == floor.comment_floor).first()
         commentee_name = session.query(User).filter(User.uid == commentee.uid).first().username
-        commenter_name = session.query(User).filter(User.uid == floor.uid).first().username
+        commenter = session.query(User).filter(User.uid == floor.uid).first()
+        commenter_name = commenter.username
+        avatar = commenter.avatar_url
         message = {"content": floor.content,
                    "commentee_floor": floor.comment_floor,
                    "commentee_name": commentee_name,
                    "commenter_name": commenter_name,
+                   "avatar": avatar,
                    "post_time": floor.post_time,
                    "like": floor.like,
                    "fid": floor.fid,
