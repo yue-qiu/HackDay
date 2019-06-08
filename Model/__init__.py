@@ -19,6 +19,7 @@ class User(base):
     register_time = Column(DateTime, default=datetime.datetime.utcnow)
     avatar_url = Column(String(255))
 
+
 class Post(base):
     __tablename__ = 'post_information'  # 表名
     tid = Column(Integer)
@@ -38,10 +39,10 @@ class Subject(base):
     title = Column(String(255))
     post_time = Column(DateTime, default=datetime.datetime.utcnow)
 
+
 class Comment(base):
     __tablename__ = 'comment_information'  # 表名
     id = Column(Integer, primary_key=True)
     uid_commenter = Column(Integer)
     uid_commentee = Column(Integer)
     counter = Column(Integer)
-

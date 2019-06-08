@@ -17,7 +17,6 @@ def modSubject():
             'MESSAGE': '参数不合法'
         }
         return jsonify(ret)
-    subject = session.query(Subject).filter(Subject.tid == tid, Subject.uid == uid).first()
     subject = session.query(Subject).filter(Subject.tid == tid).first()
     ret = {
         'code': status.get('ERROR'),

@@ -1,10 +1,10 @@
 from flask import Flask
 from Config import config
-from auth import Auth, auth_login, cors
+from auth import Auth, auth_login
 from message import Message
 from subject import Sub
 from user_info import UserInfo
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 
 
 def create_app():
