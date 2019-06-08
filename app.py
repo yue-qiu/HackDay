@@ -6,7 +6,7 @@ from auth import Auth
 def create_app():
     app = Flask(__name__)
     app.config.from_object(config["Develop"])
-    app.register_blueprint(Auth)
+    app.register_blueprint(Auth, url_prefix="/auth")
     return app
 
 

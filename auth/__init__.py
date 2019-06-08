@@ -3,7 +3,7 @@ import hashlib
 from Model import session, User
 from conf import status
 
-Auth = Blueprint('Auth', __name__, url_prefix="/auth")
+Auth = Blueprint('Auth', __name__)
 
 
 @Auth.route("/register", methods=["POST"])
