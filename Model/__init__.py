@@ -30,4 +30,4 @@ class Subject(base):
     tid = Column(Integer, primary_key=True)
     uid = Column(Integer)
     title = Column(String(255))
-    register_time = Column(DateTime, default=datetime.datetime.utcnow)
+    post_time = Column(DateTime, default=datetime.datetime.utcnow)
