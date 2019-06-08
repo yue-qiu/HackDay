@@ -45,7 +45,8 @@ def setUserInfo():
             'MESSAGE': '未找到该用户'
         }
         return jsonify(ret)
-    user.username = username
+    if username is not None:
+        user.username = username
     if pic_file is not None:
         pic_info = requests.post('http://api.cugxuan.cn:8080/upload', files={'file':pic_file})
         pic_info = pic_info.json()
