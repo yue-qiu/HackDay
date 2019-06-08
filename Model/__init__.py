@@ -21,11 +21,12 @@ class User(base):
 
 class Post(base):
     __tablename__ = 'post_information'  # 表名
-    tid = Column(Integer, primary_key=True)
+    tid = Column(Integer)
     content = Column(String(65535))
     comment_floor = Column(Integer)
-    fid = Column(Integer, primary_key=True)
+    fid = Column(Integer)
     post_time = Column(DateTime, default=datetime.datetime.utcnow)
+    like = Column(Integer)
 
 
 class Subject(base):
