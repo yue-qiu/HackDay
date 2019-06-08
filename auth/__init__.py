@@ -51,6 +51,7 @@ def login():
             result = {
                 "code": status.get("SUCCESS"),
                 "MESSAGE": "登陆成功",
+                'uid': user.uid
             }
             return jsonify(result)
     result = {

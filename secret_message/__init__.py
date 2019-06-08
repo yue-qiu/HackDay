@@ -37,11 +37,8 @@ def sendSecMessage():
         }
         return jsonify(ret)
     intimate1 = session.query(Comment).filter(Comment.uid_commentee==from_uid, Comment.uid_commenter==to_uid).first()
-    intimate1 = intimate1.count
     intimate2 = session.query(Comment).filter(Comment.uid_commentee==to_uid, Comment.uid_commenter==from_uid).first()
-    intimate2 = intimate2.count
-    intimate = min(intimate1, intimate2)
-    if intimate < 30:
+    if intimate1 is None or intimate2 is None or min(intimate1.count, intimate2.count) < 30:
         ret = {
             'code': status.get('PERMISSION'),
             'MESSAGE': '亲密度未达到文本私信要求'

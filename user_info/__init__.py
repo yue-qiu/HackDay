@@ -92,3 +92,43 @@ def Hot(id):
         "result": hot,
     }
     return jsonify(result)
+
+@UserInfo.route("/getUid", methods=["POST"])
+def getUid():
+    uid = ses.get('uid', None)
+    if uid is None:
+        result = {
+            "code": status.get("ERROR"),
+            "MESSAGE": "获取UID失败",
+        }
+        return jsonify(result)
+    result = {
+        "code": status.get("SUCCESS"),
+        "MESSAGE": "获取UID成功",
+        "uid": uid,
+    }
+    return jsonify(result)
+
+@UserInfo.route("/getUidByUsername", methods=["POST"])
+def getUidByUsername():
+    username = request.form.get('username', None)
+    if username is None:
+        result = {
+            "code": status.get("ERROR"),
+            "MESSAGE": "获取UID失败",
+        }
+        return jsonify(result)
+    user = session.query(User).filter(User.username==username).first()
+    if user is None:
+        result = {
+            "code": status.get("ERROR"),
+            "MESSAGE": "不存在该用户",
+        }
+        return jsonify(result)
+    uid = user.uid
+    result = {
+        "code": status.get("SUCCESS"),
+        "MESSAGE": "获取UID成功",
+        "uid": uid,
+    }
+    return jsonify(result)

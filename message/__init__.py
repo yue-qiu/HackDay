@@ -14,10 +14,11 @@ def view(tid):
     for floor in floors:
         commentee = session.query(Post).filter(Post.fid == floor.comment_floor).first()
         commentee_name = session.query(User).filter(User.uid == commentee.uid).first().username
-
+        commenter_name = session.query(User).filter(User.uid == floor.uid).first().username
         message = {"content": floor.content,
                    "commentee_floor": floor.comment_floor,
                    "commentee_name": commentee_name,
+                   "commenter_name": commenter_name,
                    "post_time": floor.post_time,
                    "like": floor.like,
                    "fid": floor.fid,
@@ -97,20 +98,35 @@ def delete():
     }
     return jsonify(result)
 
-
-
-
-
-
-# @Message.route("/like", methods=["POST"])
-# def like():
-#     tid = request.form.get("tid")
-#     fid = request.form.get("fid")
-#     floor = session.query(Post).filter(Post.tid == tid, Post.fid == fid).first()
-#     floor.like += 1
-#     session.commit()
-#     result = {
-#         "code": status.get("SUCCESS"),
-#         "MESSAGE": "点赞成功",
-#     }
-#     return jsonify(result)
+@Message.route("/like", methods=["POST"])
+def like():
+    tid = request.form.get("tid")
+    fid = request.form.get("fid")
+    likeValue = int(request.form.get("like"))
+    if likeValue < -2 or likeValue > 2:
+        ret = {
+            "code": status.get('ERROR'),
+            "MESSAGE": '点赞值超过限制'
+        }
+        return jsonify(ret)
+    like_uid = g.uid
+    floor = session.query(Post).filter(Post.tid == tid, Post.fid == fid).first()
+    liked_uid = floor.uid
+    if like_uid == liked_uid:
+        ret = {
+            "code": status.get('ERROR'),
+            "MESSAGE": '无法点赞自己'
+        }
+        return jsonify(ret)
+    floor.like += likeValue
+    comment = session.query(Comment).filter(Comment.uid_commenter==like_uid, Comment.uid_commentee==liked_uid).first()
+    if comment is None:
+        comment = Comment(uid_commenter=like_uid, uid_commentee=liked_uid, counter=0)
+        session.add(comment)
+    comment.counter += likeValue
+    session.commit()
+    result = {
+        "code": status.get("SUCCESS"),
+        "MESSAGE": "点赞成功",
+    }
+    return jsonify(result)
