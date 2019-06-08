@@ -9,20 +9,30 @@ UserInfo = Blueprint('UserInfo', __name__)
 
 @UserInfo.route("/getUserInfo", methods=["POST"])
 def getUserInfo():
-    uid = request.form.get('uid')
-    if uid is None:
+    that_uid = request.form.get('uid', None)
+    uid = ses.get('uid', None)
+    if that_uid is None:
         ret = {
             'code': status.get('ERROR'),
             'MESSAGE': '参数不合法'
         }
         return jsonify(ret)
-    user = session.query(User).filter(User.uid == uid).first()
+    user = session.query(User).filter(User.uid == that_uid).first()
     if user is None:
         ret = {
             'code': status.get('ERROR'),
             'MESSAGE': '未找到该用户'
         }
         return jsonify(ret)
+    if uid != that_uid:
+        intimate1 = session.query(Comment).filter(Comment.uid_commentee==that_uid, Comment.uid_commenter==uid).first()
+        intimate2 = session.query(Comment).filter(Comment.uid_commentee==uid, Comment.uid_commenter==that_uid).first()
+        if intimate1 is None or intimate2 is None or min(intimate1, intimate2) < 70:
+            ret = {
+                'code': status.get('PERMISSION'),
+                'MESSAGE': '亲密度未达到查看个人信息要求'
+            }
+            return jsonify(ret)
     ret = {
         "code": status.get("SUCCESS"),
         "messages": '获取用户信息成功',
@@ -33,7 +43,7 @@ def getUserInfo():
         }
     }
     return jsonify(ret)
-
+        
 
 @UserInfo.route("/setUserInfo", methods=["POST"])
 def setUserInfo():

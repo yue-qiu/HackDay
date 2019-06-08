@@ -26,6 +26,7 @@ def view(tid):
     result = {
         "code": status.get("SUCCESS"),
         "messages": messages,
+        "tid": tid
     }
     return jsonify(result)
 
