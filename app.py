@@ -12,6 +12,7 @@ def create_app():
     app.config.from_object(config["Develop"])
     Message.before_request(auth_login)
     Sub.before_request(auth_login)
+    UserInfo.before_request(auth_login)
     Message.after_request(cors)
     Sub.after_request(cors)
     UserInfo.after_request(cors)
