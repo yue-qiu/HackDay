@@ -5,6 +5,11 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column,Integer,String,DateTime
 import datetime
 
+engine=create_engine("mysql+pymysql://root:123456@192.168.1.111/hackday",encoding='utf-8',echo=True)
+base=declarative_base()
+base.metadata.create_all(engine) #创建表结构
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
 class User(base):
     __tablename__ = 'user_information' #表名
     uid = Column(Integer, primary_key=True)
@@ -26,13 +31,3 @@ class Subject(base):
     uid = Column(Integer)
     title = Column(String(255))
     register_time = Column(DateTime, default=datetime.datetime.utcnow)
-
-class DB:
-    def __init__():
-        #创建连接
-        engine=create_engine("mysql+pymysql://root:123456@localhost/hackday",encoding='utf-8',echo=True)
-        #生成orm基类
-        base=declarative_base()
-        base.metadata.create_all(engine) #创建表结构
-        DBSession = sessionmaker(bind=engine)
-        self.session = DBSession()

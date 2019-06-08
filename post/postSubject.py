@@ -1,8 +1,7 @@
 # 发表主题贴
 import sys
 sys.path.append("..")
-import Model.*
+from Model import session, User
 
-DB = Model.DB()
-a=DB.session.query(Model.DB.User).first()
-print(a)
+a=session.query(User).first()
+print(a.uid) #14
