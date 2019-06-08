@@ -15,7 +15,7 @@ def register():
         hash.update(password.encode(encoding='utf-8'))
         user = session.query(User).filter(User.username == username).first()
         if not user:
-            user = User(username=username, password=hash.hexdigest())
+            user = User(username=username, password=hash.hexdigest(), avatar_url='http://pic1.cugapp.com/FikstAllXLweowBEXpy5FQxPd8td.jpg')
             session.add(user)
             session.commit()
             result = {

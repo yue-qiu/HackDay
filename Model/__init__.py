@@ -17,7 +17,7 @@ class User(base):
     username = Column(String(32))
     password = Column(String(64))
     register_time = Column(DateTime, default=datetime.datetime.utcnow)
-
+    avatar_url = Column(String(255))
 
 class Post(base):
     __tablename__ = 'post_information'  # 表名
