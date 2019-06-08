@@ -54,7 +54,7 @@ def login():
 
 def auth_login():
     g.uid = ses.get("uid", None)
-    if not ses.get("uid", None):
+    if not g.uid:
         result = {
             "code": 300,
             "MESSAGE": "未登录",
