@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, session as ses, g
+from flask import Blueprint, request, jsonify, session as ses, g, make_response
 import hashlib
 from Model import session, User
 from conf import status
@@ -53,12 +53,14 @@ def login():
 
 
 def auth_login():
+    g.uid = ses.get("uid", None)
     if not ses.get("uid", None):
         result = {
             "code": 300,
             "MESSAGE": "未登录",
         }
         return jsonify(result)
+
 
 def cors(resp):
     resp = make_response(resp)
