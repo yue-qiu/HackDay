@@ -14,7 +14,7 @@ def create_app():
     Message.after_request(cors)
     Sub.after_request(cors)
     app.register_blueprint(Auth, url_prefix="/auth")
-    app.register_blueprint(Message, url_prefix="/post")
+    app.register_blueprint(Message, url_prefix="/message")
     app.register_blueprint(Sub, url_prefix="/sub")
     return app
 

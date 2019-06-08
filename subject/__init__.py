@@ -5,46 +5,6 @@ from conf import status
 
 Sub = Blueprint('Sub', __name__)
 
-@Sub.route('/postSubject', methods=['POST'])
-def postSubject():
-    title = request.form.get('title', None)
-    uid = ses.get("uid", None)
-    if title is None:
-        ret = {
-            'code': status.get('ERROR'),
-            'MESSAGE': '参数不合法'
-        }
-        return jsonify(ret)
-    new_subject = Subject(uid=uid, title=title)
-    session.add(new_subject)
-    session.commit()
-    ret = {
-        'code': status.get("SUCCESS"),
-        'MESSAGE': '发帖成功'
-    }
-    return jsonify(ret)
-
-@Sub.route('/deleteSubject', methods=['POST'])
-def deleteSubject():
-    tid = request.form.get('tid', None)
-    uid = ses.get("uid", None)
-    if tid is None:
-        ret = {
-            'code': status.get('ERROR'),
-            'MESSAGE': '参数不合法'
-        }
-        return jsonify(ret)
-    subject = session.query(Subject).filter(Subject.tid==tid, Subject.uid==uid).first()
-    ret = {
-        'code': status.get('ERROR'),
-        'MESSAGE': '找不到该贴'
-    }
-    if subject is not None:
-        session.delete(subject)
-        session.commit()
-        ret['code'] = status.get('SUCCESS')
-        ret['MESSAGE'] = '删除成功'
-    return jsonify(ret)
 
 @Sub.route('/modSubject', methods=['POST'])
 def modSubject():
@@ -57,8 +17,8 @@ def modSubject():
             'MESSAGE': '参数不合法'
         }
         return jsonify(ret)
-    subject = session.query(Subject).filter(Subject.tid==tid, Subject.uid==uid).first()
-    subject = session.query(Subject).filter(Subject.tid==tid).first()
+    subject = session.query(Subject).filter(Subject.tid == tid, Subject.uid == uid).first()
+    subject = session.query(Subject).filter(Subject.tid == tid).first()
     ret = {
         'code': status.get('ERROR'),
         'MESSAGE': '找不到该贴'
@@ -70,8 +30,9 @@ def modSubject():
         ret['MESSAGE'] = '修改成功'
     return jsonify(ret)
 
+
 @Sub.route('/getSubList', methods=['POST'])
-def getSubList(): # page_index start from 1
+def getSubList():  # page_index start from 1
     page_size = 10
     page_index = request.form.get('page', None)
     if page_index is None:
@@ -81,12 +42,13 @@ def getSubList(): # page_index start from 1
         }
         return jsonify(ret)
     page_index = int(page_index)
-    subjectList = session.query(Subject).order_by(Subject.tid.desc()).slice((page_index - 1) * page_size, page_index * page_size)
+    subjectList = session.query(Subject).order_by(Subject.tid.desc()).slice((page_index - 1) * page_size,
+                                                                            page_index * page_size)
     data = list()
     for v in subjectList:
-        username = session.query(User).filter(User.uid==v.uid).first()
+        username = session.query(User).filter(User.uid == v.uid).first()
         username = '匿名' if username is None else username.username
-        threads = session.query(Post).filter(Post.tid==v.tid).count()
+        threads = session.query(Post).filter(Post.tid == v.tid).count()
         item = {
             'tid': v.tid,
             'username': username,
