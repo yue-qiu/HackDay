@@ -45,15 +45,17 @@ def getSubList():  # page_index start from 1
                                                                             page_index * page_size)
     data = list()
     for v in subjectList:
-        username = session.query(User).filter(User.uid == v.uid).first()
-        username = '匿名' if username is None else username.username
+        user = session.query(User).filter(User.uid == v.uid).first()
+        username = '匿名' if user is None else user.username
+        avater = 'http://pic1.cugapp.com/FikstAllXLweowBEXpy5FQxPd8td.jpg' if user is None else user.avater
         threads = session.query(Post).filter(Post.tid == v.tid).count()
         item = {
             'tid': v.tid,
             'username': username,
             'title': v.title,
             'post_time': v.post_time,
-            'threads': threads
+            'threads': threads,
+            'avater': avater,
         }
         data.append(item)
     ret = {

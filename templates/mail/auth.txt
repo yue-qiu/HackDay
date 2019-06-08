@@ -1,0 +1,5 @@
+Hello,
+Thank you for subscribing Flask Weekly!
+Enjoy the reading :)
+
+Visit this link ro unsubscribe: {{ url }}
