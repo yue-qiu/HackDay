@@ -59,12 +59,15 @@ def auth_login():
             "code": 300,
             "MESSAGE": "未登录",
         }
+        print(result)
         return jsonify(result)
 
 
 def cors(resp):
     resp = make_response(resp)
-    resp.headers['Access-Control-Allow-Origin'] = '*'
+    #header("Access-Control-Allow-Origin: http://localhost:9999");
+    resp.headers['Access-Control-Allow-Origin'] = 'http://192.168.1.111:5000'
     resp.headers['Access-Control-Allow-Methods'] = 'GET,POST'
+    resp.headers['Access-Control-Allow-Credentials'] = True
     resp.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
     return resp
