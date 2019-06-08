@@ -1,7 +1,8 @@
 # 发表主题贴
 from flask import Blueprint, jsonify, g, request
-from Model import session, Post, Subject
+from Model import session, Post, Subject, User
 from conf import status
+from user_info import Comment
 
 Message = Blueprint('Message', __name__)
 
@@ -11,8 +12,11 @@ def view(tid):
     floors = session.query(Post).filter(Post.tid == tid).all()
     messages = []
     for floor in floors:
+        commentee = session.query(Post).filter(Post.fid == floor.comment_floor).first()
+        commentee_name = session.query(User).filter(User.uid == commentee.uid).first()
         message = {"content": floor.content,
                    "comment_floor": floor.comment_floor,
+                   "comment_name": commentee_name,
                    "post_time": floor.post_time,
                    "like": floor.like,
                    "fid": floor.fid,
@@ -59,6 +63,14 @@ def comment():
     message = Post(tid=tid, content=content, comment_floor=int(comment_floor), fid=last_floor.fid + 1, like=0,
                    uid=g.uid)
     session.add(message)
+    commentee = session.query(Post).filter(Post.fid == comment_floor).first()
+    relation = session.query(Comment).filter(Comment.uid_commenter == g.uid, Comment.uid_commentee == commentee.uid).first()
+    if commentee.uid != g.uid:
+        if relation is None:
+            comment = Comment(uid_commenter=g.uid, uid_commentee=commentee.uid, counter=1)
+            session.add(comment)
+        elif relation.uid_commentee != g.uid:
+            relation.counter += 1
     session.commit()
     result = {
         "code": status.get("SUCCESS"),

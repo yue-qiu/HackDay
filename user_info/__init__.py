@@ -1,6 +1,6 @@
 # 发表主题贴
 from flask import Blueprint, jsonify, g, request, session as ses
-from Model import session, Post, Subject, User
+from Model import session, User, Comment
 from conf import status
 import requests
 
@@ -52,7 +52,6 @@ def setUserInfo():
     if pic_file is not None:
         pic_info = requests.post('http://api.cugxuan.cn:8080/upload', files={'file': pic_file})
         pic_info = pic_info.json()
-        print(pic_info)
         if pic_info['code'] == 200:
             pic_url = 'http://pic1.cugapp.com/' + pic_info['name']
             user.avatar_url = pic_url
@@ -68,3 +67,18 @@ def setUserInfo():
         "messages": '修改用户信息成功'
     }
     return jsonify(ret)
+
+
+@UserInfo.route("/hot/<string:id>", methods=["GET"])
+def Hot(id):
+    relation = session.query(Comment).filter(Comment.uid_commentee == id, Comment.uid_commenter == g.uid).first()
+    if relation:
+        hot = relation.counter
+    else:
+        hot = 0
+    result = {
+        "code": status.get("SUCCESS"),
+        "MESSAGE": "亲密度获取成功",
+        "result": hot,
+    }
+    return jsonify(result)
