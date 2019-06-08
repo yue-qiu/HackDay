@@ -5,7 +5,8 @@ from message import Message
 from subject import Sub
 from user_info import UserInfo
 from secret_message import SecretMessage
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
+
 
 def create_app():
     app = Flask(__name__)

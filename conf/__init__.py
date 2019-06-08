@@ -10,5 +10,6 @@ status = {
     "SUCCESS": cfg.get("status", "SUCCESS"),
     "FAIL": cfg.get("status", "FAIL"),
     "ERROR": cfg.get("status", "ERROR"),
-    "PERMISSION": cfg.get("status", "PERMISSION")
+    "PERMISSION": cfg.get("status", "PERMISSION"),
+    "UNACTIVE": cfg.get("status", "UNACTIVE"),
 }
