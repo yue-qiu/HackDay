@@ -75,8 +75,8 @@ def auth_login():
 
 def cors(resp):
     resp = make_response(resp)
-    #header("Access-Control-Allow-Origin: http://localhost:9999");
-    resp.headers['Access-Control-Allow-Origin'] = 'http://192.168.1.111:5000'
+    #resp.headers['Access-Control-Allow-Origin'] = 'http://192.168.1.111:5000'
+    resp.headers['Access-Control-Allow-Origin'] = '*'
     resp.headers['Access-Control-Allow-Methods'] = 'GET,POST'
     resp.headers['Access-Control-Allow-Credentials'] = True
     resp.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'

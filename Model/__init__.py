@@ -45,3 +45,10 @@ class Comment(base):
     uid_commentee = Column(Integer)
     counter = Column(Integer)
 
+class SecMessage(base):
+    __tablename__ = 'secret_message_information'  # 表名
+    id = Column(Integer, primary_key=True)
+    uid_sender = Column(Integer)
+    uid_receiver = Column(Integer)
+    message = Column(String(255))
+
