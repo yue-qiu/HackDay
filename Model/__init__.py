@@ -27,6 +27,7 @@ class Post(base):
     fid = Column(Integer)
     post_time = Column(DateTime, default=datetime.datetime.utcnow)
     like = Column(Integer)
+    pid = Column(Integer, primary_key=True)
 
 
 class Subject(base):
