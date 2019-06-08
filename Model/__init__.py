@@ -23,7 +23,7 @@ class Post(base):
     __tablename__ = 'post_information'  # 表名
     tid = Column(Integer, primary_key=True)
     content = Column(String(65535))
-    comment = Column(String(65535))
+    comment_floor = Column(Integer)
     fid = Column(Integer, primary_key=True)
     post_time = Column(DateTime, default=datetime.datetime.utcnow)
 
