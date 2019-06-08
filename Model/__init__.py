@@ -18,6 +18,9 @@ class User(base):
     password = Column(String(64))
     register_time = Column(DateTime, default=datetime.datetime.utcnow)
     avatar_url = Column(String(255))
+    phone = Column(String(15))
+    email = Column(String(20))
+    qq = Column(String(12))
 
 
 class Post(base):
@@ -53,4 +56,6 @@ class SecMessage(base):
     uid_sender = Column(Integer)
     uid_receiver = Column(Integer)
     message = Column(String(255))
+    name_sender = Column(String(255))
+    name_receiver = Column(String(255))
 
