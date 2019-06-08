@@ -47,7 +47,7 @@ def getSubList():  # page_index start from 1
     for v in subjectList:
         user = session.query(User).filter(User.uid == v.uid).first()
         username = '匿名' if user is None else user.username
-        avater = 'http://pic1.cugapp.com/FikstAllXLweowBEXpy5FQxPd8td.jpg' if user is None else user.avater
+        avater = 'http://pic1.cugapp.com/FikstAllXLweowBEXpy5FQxPd8td.jpg' if user is None else user.avatar_url
         threads = session.query(Post).filter(Post.tid == v.tid).count()
         item = {
             'tid': v.tid,
@@ -55,7 +55,7 @@ def getSubList():  # page_index start from 1
             'title': v.title,
             'post_time': v.post_time,
             'threads': threads,
-            'avater': avater,
+            'avatar': avater,
         }
         data.append(item)
     ret = {
@@ -64,6 +64,7 @@ def getSubList():  # page_index start from 1
         'data': data
     }
     return jsonify(ret)
+
 
 @Sub.route('/getSubCount', methods=['POST'])
 def getSubCount():
