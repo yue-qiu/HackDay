@@ -63,3 +63,13 @@ def getSubList():  # page_index start from 1
         'data': data
     }
     return jsonify(ret)
+
+@Sub.route('/getSubCount', methods=['POST'])
+def getSubCount():
+    subject_count = session.query(Subject).count();
+    ret = {
+        'code': status.get('SUCCESS'),
+        'MESSAGE': "获取主题贴总数成功",
+        'data': subject_count
+    }
+    return jsonify(ret)
