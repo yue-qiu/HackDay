@@ -21,6 +21,7 @@ class User(base):
     phone = Column(String(15))
     email = Column(String(20))
     qq = Column(String(12))
+    wechat = Column(String(15))
 
 
 class Post(base):
