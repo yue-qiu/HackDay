@@ -119,6 +119,7 @@ def getUid():
         result = {
             "code": status.get("ERROR"),
             "MESSAGE": "获取UID失败",
+            "uid": -1,
         }
         return jsonify(result)
     result = {
