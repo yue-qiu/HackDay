@@ -24,6 +24,9 @@ def getUserInfo():
             'MESSAGE': '未找到该用户'
         }
         return jsonify(ret)
+    uid = int(uid)
+    that_uid = int(that_uid)
+    print(uid, that_uid)
     if uid != that_uid:
         intimate1 = session.query(Comment).filter(Comment.uid_commentee == that_uid,
                                                   Comment.uid_commenter == uid).first()
@@ -48,6 +51,7 @@ def getUserInfo():
             'wechat': user.wechat
         }
     }
+    print(ret)
     return jsonify(ret)
 
 
@@ -112,21 +116,24 @@ def Hot(id):
     return jsonify(result)
 
 
-@UserInfo.route("/getUid")
+@UserInfo.route("/getUid", methods=['GET'])
 def getUid():
     uid = ses.get('uid', None)
+    print(uid)
     if uid is None:
         result = {
             "code": status.get("ERROR"),
             "MESSAGE": "获取UID失败",
             "uid": -1,
         }
+        print(result)
         return jsonify(result)
     result = {
         "code": status.get("SUCCESS"),
         "MESSAGE": "获取UID成功",
         "uid": uid,
     }
+    print(result)
     return jsonify(result)
 
 
