@@ -108,15 +108,15 @@ def send_mail(to, token):
     receivers = [to]  # 接收邮件，可设置为你的QQ邮箱或者其他邮箱
 
     mail_msg = """
-    <p>Python 邮件发送测试...</p>
+    <p>Python 点击下面的链接，就可以完成账号认证啦~</p>
     <p><a href="{}">这是一个链接</a></p>
-    """.format("http://127.0.0.1:5000/auth/authregister/" + token)
+    """.format(url_for("Auth.authRefister", token=token))
 
     message = MIMEText(mail_msg, 'html', 'utf-8')
     message['From'] = Header("Fire", 'utf-8')
     message['To'] = Header("New User", 'utf-8')
 
-    subject = '欢迎来到Fire'
+    subject = '欢迎加入Fire'
     message['Subject'] = Header(subject, 'utf-8')
 
     server = smtplib.SMTP_SSL("smtp.qq.com", 465)
@@ -125,7 +125,7 @@ def send_mail(to, token):
     server.quit()
 
 
-def auth_login():
+def verify_login():
     g.uid = ses.get("uid", None)
     if not g.uid:
         result = {
