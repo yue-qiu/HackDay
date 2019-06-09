@@ -58,6 +58,12 @@ def sendSecMessage():
         }
         return jsonify(ret)
     if msg_type == 1:
+        if intimate1 is None or intimate2 is None or min(intimate1.counter, intimate2.counter) < 50:
+            ret = {
+                'code': status.get('PERMISSION'),
+                'MESSAGE': '亲密度未达到文本私信要求'
+            }
+            return jsonify(ret)
         pic_info = requests.post('http://api.cugxuan.cn:8080/upload', files={'file': message})
         pic_info = pic_info.json()
         if pic_info['code'] == 200:
