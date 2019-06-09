@@ -103,9 +103,9 @@ def send_mail(to, token):
     receivers = [to]  # 接收邮件，可设置为你的QQ邮箱或者其他邮箱
 
     mail_msg = """
-    <p>Python 点击下面的链接，就可以完成账号认证啦~</p>
+    <p>点击下面的链接，就可以完成账号认证啦~</p>
     <p><a href="{}">这是一个链接</a></p>
-    """.format(url_for("Auth.authRefister", token=token))
+    """.format(url_for("Auth.authRefister", token=token, _external=True))
 
     message = MIMEText(mail_msg, 'html', 'utf-8')
     message['From'] = Header("Fire", 'utf-8')
