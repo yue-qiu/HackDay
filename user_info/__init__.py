@@ -1,6 +1,6 @@
 # 发表主题贴
 from flask import Blueprint, jsonify, g, request, session as ses
-from Model import session, User, Comment
+from Model import session, User, Comment, Subject
 from conf import status
 import requests
 
@@ -29,7 +29,7 @@ def getUserInfo():
                                                   Comment.uid_commenter == uid).first()
         intimate2 = session.query(Comment).filter(Comment.uid_commentee == uid,
                                                   Comment.uid_commenter == that_uid).first()
-        if intimate1 is None or intimate2 is None or min(intimate1.counter, intimate2.counter) < 70:
+        if intimate1 is None or intimate2 is None or min(intimate1, intimate2) < 70:
             ret = {
                 'code': status.get('PERMISSION'),
                 'MESSAGE': '亲密度未达到查看个人信息要求'
@@ -134,6 +134,21 @@ def getUidByUsername():
         "code": status.get("SUCCESS"),
         "MESSAGE": "获取UID成功",
         "uid": uid,
+    }
+    return jsonify(result)
+
+
+@UserInfo.route("/history")
+def history():
+    passages = session.query(Subject).filter(Subject.uid == g.uid).all()
+    infos = []
+    for passage in passages:
+        info = {"tid": passage.tid, "title": passage.title, "post_time": passage.post_time}
+        infos.append(info.copy())
+    result = {
+        "code": status.get("SUCCESS"),
+        "MESSAGE": "获取个人历史发帖纪录成功",
+        "infos": infos
     }
     return jsonify(result)
 

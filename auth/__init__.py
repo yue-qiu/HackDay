@@ -80,11 +80,6 @@ def login():
                 "MESSAGE": "登陆成功",
             }
             return jsonify(result)
-        result = {
-            "code": status.get("UNACTIVE"),
-            "MESSAGE": "账号不存在"
-        }
-        return jsonify(result)
     result = {
         "code": status.get("FAIL"),
         "MESSAGE": "登陆失败，请检查用户密码",
