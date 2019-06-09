@@ -8,7 +8,7 @@ SecretMessage = Blueprint('SecretMessage', __name__)
 @SecretMessage.route("/getSecMessage", methods=["POST"])
 def getSecMessage():
     uid = g.uid
-    msgs = session.query(SecMessage).filter(SecMessage.uid_receiver == uid).all()
+    msgs = session.query(SecMessage).filter(SecMessage.uid_receiver == uid or SecMessage.uid_sender== uid).all()
     messages = []
     for msg in msgs:
         message = {"from_id": msg.uid_sender,
@@ -43,7 +43,7 @@ def sendSecMessage():
         return jsonify(ret)
     intimate1 = session.query(Comment).filter(Comment.uid_commentee==from_uid, Comment.uid_commenter==to_uid).first()
     intimate2 = session.query(Comment).filter(Comment.uid_commentee==to_uid, Comment.uid_commenter==from_uid).first()
-    if intimate1 is None or intimate2 is None or min(intimate1.count, intimate2.count) < 30:
+    if intimate1 is None or intimate2 is None or min(intimate1.counter, intimate2.counter) < 30:
         ret = {
             'code': status.get('PERMISSION'),
             'MESSAGE': '亲密度未达到文本私信要求'

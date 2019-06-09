@@ -29,7 +29,7 @@ def getUserInfo():
                                                   Comment.uid_commenter == uid).first()
         intimate2 = session.query(Comment).filter(Comment.uid_commentee == uid,
                                                   Comment.uid_commenter == that_uid).first()
-        if intimate1 is None or intimate2 is None or min(intimate1, intimate2) < 70:
+        if intimate1 is None or intimate2 is None or min(intimate1.counter, intimate2.counter) < 70:
             ret = {
                 'code': status.get('PERMISSION'),
                 'MESSAGE': '亲密度未达到查看个人信息要求'
