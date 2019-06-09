@@ -41,7 +41,11 @@ def getUserInfo():
         'data': {
             'uid': uid,
             'username': user.username,
-            'avatar': user.avatar_url
+            'avatar': user.avatar_url,
+            'phone': user.phone,
+            'email': user.email,
+            'qq': user.qq,
+            'wechat': user.wechat
         }
     }
     return jsonify(ret)
@@ -51,6 +55,10 @@ def getUserInfo():
 def setUserInfo():
     username = request.form.get('username', None)
     pic_file = request.files.get('new_pic', None)
+    phone = request.files.get('new_phone', None)
+    email = request.files.get('new_email', None)
+    qq = request.files.get('new_qq', None)
+    wechat = request.files.get('new_wechat', None)
     uid = ses.get('uid')
     user = session.query(User).filter(User.uid == uid).first()
     if user is None:
@@ -61,6 +69,14 @@ def setUserInfo():
         return jsonify(ret)
     if username is not None:
         user.username = username
+    if phone is not None:
+        user.phone = phone
+    if email is not None:
+        user.email = email
+    if qq is not None:
+        user.qq = qq
+    if wechat is not None:
+        user.wechat = wechat
     if pic_file is not None:
         pic_info = requests.post('http://api.cugxuan.cn:8080/upload', files={'file': pic_file})
         pic_info = pic_info.json()
