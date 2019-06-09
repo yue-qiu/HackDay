@@ -80,6 +80,9 @@ def login():
                 "MESSAGE": "登陆成功",
             }
             return jsonify(result)
+        elif user and not user.is_active:
+            session.delete(user)
+            session.commit()
     result = {
         "code": status.get("FAIL"),
         "MESSAGE": "登陆失败，请检查用户密码",
